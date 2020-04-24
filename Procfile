@@ -1,1 +1,1 @@
-web: flask_session
+web: flask project1: application
