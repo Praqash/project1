@@ -1,6 +1,20 @@
 
 
 
+my_awesome_app = Flask(__name__)
+
+
+@my_awesome_app.route('/')
+def hello_world():
+    return 'HELLO EVERYONE HOW IS IT GOING'
+
+
+if __name__ == '__main__':
+    my_awesome_app.run()
+
+
+
+
 
 
 
@@ -24,3 +38,5 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route('/')
 def index():
    return render_template('hello.html')
+if __name__ == '__main__':
+    app.run()
