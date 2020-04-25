@@ -1,1 +1,1 @@
-web: gunicorn application:my_awesome_app
+web: gunicorn application:app
