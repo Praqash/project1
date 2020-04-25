@@ -4,3 +4,4 @@ psycopg2-binary
 SQLAlchemy
 gunicorn
 werkzeug==1.0.0
+-U cachelib
