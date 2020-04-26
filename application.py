@@ -4,18 +4,11 @@ from flask import Flask, session
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-
-
-
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
-
-
-
 from datetime import datetime
 from flask import Flask, render_template, url_for, flash, redirect
-
 from forms import RegistrationForm, LoginForm
 from flask import Flask
 app = Flask(__name__)
@@ -31,17 +24,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-engine = create_engine(os.getenv("DATABASE_URL"))
-db = scoped_session(sessionmaker(bind=engine))
-
-
-
-
-
-
-
-
-
 
 
 @app.route("/")
@@ -49,18 +31,13 @@ db = scoped_session(sessionmaker(bind=engine))
 def home():
     return render_template('home.html')
 
-
-
-
-
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/register")
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         flash(f'Account created for {form.username.data}!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form)
-
 
 @app.route("/login")
 def login():
