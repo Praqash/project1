@@ -2,7 +2,7 @@ Flask
 Flask-Session
 psycopg2-binary
 SQLAlchemy
-gunicorn
+gunicorn==20.0.4
 werkzeug==0.16.0
 validators
 passlib==1.7.0
