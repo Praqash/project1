@@ -10,7 +10,7 @@
 
                     {% if form.username.errors %}
                         {{ form.username(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
+
                             {% for error in form.username.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
@@ -23,7 +23,7 @@
                     {{ form.password.label(class="form-control-label") }}
                     {% if form.password.errors %}
                         {{ form.password(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
+                      
                             {% for error in form.password.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}

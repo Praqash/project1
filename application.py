@@ -10,6 +10,8 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 from datetime import datetime
 from flask import Flask, render_template, url_for, flash, redirect
 from flask_wtf import FlaskForm
+from flask import Flask, render_template, flash, request
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 
 
 
@@ -34,26 +36,18 @@ Session(app)
 def home():
     return render_template('home.html')
 
-@app.route("/register")
+@app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='register', form=form)
 
-@app.route("/login")
+
+
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-
-
     form = LoginForm()
-    if form.validate_on_submit():
-        if form.username.data == 'admin@blog.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+    return render_template('login.html', title='login', form=form)
 
 
 
@@ -65,10 +59,24 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
 
+
 class LoginForm(FlaskForm):
     username = StringField('Username')
     password = PasswordField('Password')
-    submit = SubmitField('Login')
+    submit = SubmitField('Submit')
+
+
+
+
+@app.route("/Submit",methods=['GET', 'POST'])
+def submit():
+
+    form = LoginForm()
+
+    return render_template('Submit.html', title='Submit', form=form)
+
+
+
 
 
 if __name__ == '__main__':
