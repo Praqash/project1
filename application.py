@@ -9,8 +9,8 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo
 from datetime import datetime
 from flask import Flask, render_template, url_for, flash, redirect
 from flask import Flask, render_template, flash, request
-from wtforms import FlaskForm, Form, TextField, TextAreaField, validators, StringField, SubmitField
-from Flask-WTF import FlaskForm
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+from flask_wtf import FlaskForm
 
 
 
