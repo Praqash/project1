@@ -6,3 +6,4 @@ gunicorn
 werkzeug==0.16.0
 validators
 passlib==1.7.0
+wtforms
