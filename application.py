@@ -49,7 +49,7 @@ def register():
          u = form.username.data
          p = form.password.data
          flash(f'Account created for {form.username.data}!', 'success')
-         return redirect(url_for('books'))
+         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 
