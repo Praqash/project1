@@ -11,6 +11,7 @@ from flask import Flask, render_template, url_for, flash, redirect
 from flask import Flask, render_template, flash, request
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 from flask_wtf import FlaskForm
+from forms import RegistrationForm, LoginForm
 
 
 
@@ -33,49 +34,33 @@ Session(app)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html')
+    return render_template('home.html', posts=posts)
+
+
+@app.route("/books")
+def books():
+    return render_template('books.html', title='Books')
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
-    return render_template('register.html', title='register', form=form)
-
-
+    if form.validate_on_submit():
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('home'))
+    return render_template('register.html', title='Register', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    return render_template('login.html', title='login', form=form)
-
-
-
-
-
-class RegistrationForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password')
-    submit = SubmitField('Sign Up')
-
-
-
-class LoginForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password')
-    submit = SubmitField('Submit')
-
-
-
-
-@app.route("/Submit",methods=['GET', 'POST'])
-def submit():
-
-    form = LoginForm()
-
-    return render_template('Submit.html', title='Submit', form=form)
-
-
-
+    if form.validate_on_submit():
+        if form.username.data == 'admin@blog.com' and form.password.data == 'password':
+            flash('You have been logged in!', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Login Unsuccessful. Please check username and password', 'danger')
+    return render_template('login.html', title='Login', form=form)
 
 
 if __name__ == '__main__':
