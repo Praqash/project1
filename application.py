@@ -46,8 +46,10 @@ def books():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
+         u = form.username.data
+         p = form.password.data
+         flash(f'Account created for {form.username.data}!', 'success')
+         return redirect(url_for('books'))
     return render_template('register.html', title='Register', form=form)
 
 
@@ -57,10 +59,11 @@ def login():
     if form.validate_on_submit():
         if form.username.data == 'admin@blog.com' and form.password.data == 'password':
             flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
+            return redirect(url_for('books'))
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
+
 
 
 if __name__ == '__main__':
