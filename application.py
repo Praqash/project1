@@ -34,7 +34,7 @@ Session(app)
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('register.html', posts=posts)
+    return render_template('register.html')
 
 
 @app.route("/books")
