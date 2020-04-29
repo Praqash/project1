@@ -1,6 +1,7 @@
 import os
 from flask import render_template
 from flask import Flask, session
+from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -15,6 +16,8 @@ from forms import RegistrationForm, LoginForm
 
 
 
+
+
 from flask import Flask
 app = Flask(__name__)
 
@@ -24,10 +27,32 @@ if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+db = SQLAlchemy(app)
+
+class user(db.Model):
+    Name = db.Column(db.String(20), nullable=False)
+    Username = db.Column(db.String(20),  primary_key=True, nullable=False)
+    Password = db.Column(db.String(60), nullable=False)
+    isbn_book_reviewed = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"User('{self.Username}', '{self.Name}')"
+
+
+class books(db.Model):
+    isbn = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    author = db.Column(db.Text, nullable=False)
+    year = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"books('{self.isbn}', '{self.ttle}','{self.author}','{self.year}')"
+
 
 
 
