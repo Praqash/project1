@@ -34,24 +34,6 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
-class user(db.Model):
-    Name = db.Column(db.String(20), nullable=False)
-    Username = db.Column(db.String(20),  primary_key=True, nullable=False)
-    Password = db.Column(db.String(60), nullable=False)
-    isbn_book_reviewed = db.Column(db.Integer)
-
-    def __repr__(self):
-        return f"User('{self.Username}', '{self.Name}')"
-
-
-class books(db.Model):
-    isbn = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    author = db.Column(db.Text, nullable=False)
-    year = db.Column(db.Integer)
-
-    def __repr__(self):
-        return f"books('{self.isbn}', '{self.ttle}','{self.author}','{self.year}')"
 
 
 
