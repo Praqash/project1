@@ -34,6 +34,7 @@ Session(app)
 @app.route("/")
 @app.route("/home")
 def home():
+    form = RegistrationForm()
     return render_template('register.html', form=form)
 
 
