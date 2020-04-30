@@ -13,6 +13,11 @@ from flask import Flask, render_template, flash, request
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 from flask_wtf import FlaskForm
 from forms import RegistrationForm, LoginForm
+from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, url_for, flash, redirect, request
+
+
+
 
 
 
@@ -27,11 +32,29 @@ if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+db = SQLAlchemy(app)
+
+
+
+
+
+
+
+
+class users(db.Model):
+    Name = db.Column(db.String(20), nullable=False)
+    Username = db.Column(db.String(20),  primary_key=True, nullable=False)
+    Password = db.Column(db.String(60), nullable=False)
+    isbn_book_reviewed = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"User('{self.Username}', '{self.Name}')"
+
 
 
 
@@ -54,22 +77,28 @@ def books():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-         u = form.username.data
-         p = form.password.data
-         flash(f'Account created for {form.username.data}!', 'success')
-         return redirect(url_for('login'))
+
+        user = users(Username=form.username.data, Name=form.name.data, Password=form.password.data,)
+        db.session.add(user)
+        db.session.commit()
+        flash('Your account has been created! You are now able to log in', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.username.data == 'admin@.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('books'))
-        else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
+       user = User.query.filter_by(Username=form.user.data).first()
+       if user and check_password(User.password, form.password.data):
+
+            return redirect('books.html')
+    else:
+            flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
 
