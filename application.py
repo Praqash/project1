@@ -53,7 +53,7 @@ class users(db.Model):
     isbn_book_reviewed = db.Column(db.Integer)
 
     def __repr__(self):
-        return f"User('{self.Username}', '{self.Name}')"
+        return f"User('{self.Username}', '{self.Name}', {self.Password})"
 
 
 
@@ -78,14 +78,18 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
 
-        user = users(Username=form.username.data, Name=form.name.data, Password=form.password.data,)
-        db.session.add(user)
-        db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
-        return redirect(url_for('login'))
+        user = users(Username=form.username.data, Name=form.name.data, Password=form.password.data)
+        temp = users.query.filter_by(Username=form.username.data).first()
+
+        if temp:
+           return f"account already exist"
+
+        else:
+             db.session.add(user)
+             db.session.commit()
+             flash('Your account has been created! You are now able to log in', 'success')
+             return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
-
-
 
 
 
@@ -93,13 +97,17 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-       user = User.query.filter_by(Username=form.user.data).first()
-       if user and check_password(User.password, form.password.data):
 
-            return redirect('books.html')
+       user  = users(Username=form.username.data, Password = form.password.data)
+       temp = users.query.filter_by(Username=form.username.data, Password=form.password.data).first()
+       if temp:
+          return render_template('books.html')
+       else:
+            return render_template('login.html', title='Login', form=form)
+
     else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+          flash('Login Unsuccessful. Please check email and password', 'danger')
+          return render_template('login.html', title='Login', form=form)
 
 
 
