@@ -43,6 +43,8 @@ db = SQLAlchemy(app)
 
 
 
+def create_users():
+    db.create_all()
 
 
 
