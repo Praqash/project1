@@ -10,6 +10,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+@app.before_first_request
+def create_user():
+    db.create_all()
+    #user_datastore.create_user(email='matt@nobien.net', password='password')
+    print ('111')
 class users(db.Model):
     Name = db.Column(db.String(20), nullable=False)
     Username = db.Column(db.String(20),  primary_key=True, nullable=False)
@@ -20,4 +27,4 @@ class users(db.Model):
         return f"User('{self.Username}', '{self.Name}', {self.Password})"
 
 if __name__ == '__main__':
-    app.run()
+    manager.run()
