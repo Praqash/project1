@@ -28,4 +28,4 @@ class users(db.Model):
         return f"User('{self.Username}', '{self.Name}', {self.Password})"
 
 if __name__ == '__main__':
-    app.run()
+    manager.run()
