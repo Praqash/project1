@@ -1,6 +1,5 @@
 import os
 from flask import render_template
-
 from flask import Flask, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
@@ -16,30 +15,41 @@ from flask_wtf import FlaskForm
 from forms import RegistrationForm, LoginForm
 from flask_sqlalchemy import SQLAlchemy
 from flask import render_template, url_for, flash, redirect, request
+from flask import Flask, render_template, request
 from models import *
 
 
 
 
+
+
+from flask import Flask
 app = Flask(__name__)
+
+
+
+
+
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
-def main():
+def table():
     db.create_all()
 
 if __name__ == "__main__":
     with app.app_context():
-        main()
+        table()
 
 
 
 
-# Check for environment variable
 
-# Configure session to use filesystem
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+
+
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -47,28 +57,8 @@ Session(app)
 db = SQLAlchemy(app)
 
 
-
-
-def create_users():
-    db.create_all()
-
-
-
-
-class users(db.Model):
-    Name = db.Column(db.String(20), nullable=False)
-    Username = db.Column(db.String(20),  primary_key=True, nullable=False)
-    Password = db.Column(db.String(60), nullable=False)
-    isbn_book_reviewed = db.Column(db.Integer)
-
-    def __repr__(self):
-        return f"User('{self.Username}', '{self.Name}', {self.Password})"
-
-
-
-
-
-
+def table():
+   db.create_all()
 
 @app.route("/")
 @app.route("/home")

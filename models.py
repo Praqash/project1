@@ -2,16 +2,15 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Flight(db.Model):
-    __tablename__ = "flights"
-    id = db.Column(db.Integer, primary_key=True)
-    origin = db.Column(db.String, nullable=False)
-    destination = db.Column(db.String, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
 
 
-class Passenger(db.Model):
-    __tablename__ = "passengers"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    flight_id = db.Column(db.Integer, db.ForeignKey("flights.id"), nullable=False)
+
+class users(db.Model):
+    __tablename__ = "users"
+    Name = db.Column(db.String(20), nullable=False)
+    Username = db.Column(db.String(20),  primary_key=True, nullable=False)
+    Password = db.Column(db.String(60), nullable=False)
+    isbn_book_reviewed = db.Column(db.Integer)
+
+    def __repr__(self):
+        return f"User('{self.Username}', '{self.Name}', {self.Password})"
