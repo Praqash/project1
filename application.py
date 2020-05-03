@@ -63,8 +63,8 @@ def table():
 @app.route("/")
 @app.route("/home")
 def home():
-    form = RegistrationForm()
-    return render_template('register.html', form=form)
+
+    return render_template('home.html')
 
 
 @app.route("/books")
