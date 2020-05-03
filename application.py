@@ -69,7 +69,8 @@ def home():
 
 @app.route("/books")
 def books():
-    return render_template('books.html', title='Books')
+
+    return render_template('books.html', title = 'Books')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -100,7 +101,8 @@ def login():
        user  = users(Username=form.username.data, Password = form.password.data)
        temp = users.query.filter_by(Username=form.username.data, Password=form.password.data).first()
        if temp:
-          return render_template('books.html')
+          return render_template('books.html', name1 = f"Hello", name2= form.username.data)
+
        else:
             return render_template('login.html', title='Login', form=form)
 
