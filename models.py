@@ -13,4 +13,4 @@ class users(db.Model):
     isbn_book_reviewed = db.Column(db.Integer)
 
     def __repr__(self):
-        return f"User('{self.Username}', '{self.Name}', {self.Password})"
+        return f"User('{self.Username}', '{self.Name}', {self.Password}, {self.isbn_book_reviewed})"

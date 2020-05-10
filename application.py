@@ -67,12 +67,17 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/books")
+@app.route("/books", methods=['GET', 'POST'])
 def books():
-
-    return render_template('books.html', title = 'Books')
-
-
+    if request.method == 'POST':
+       name=request.form.get("username")
+       temp = users.query.filter_by(Username=name).first()
+       if temp:
+          return render_template('books.html', name=temp.Name)
+       else:
+          return redirect(url_for('login'))
+    else:
+       return redirect(url_for('login'))
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -96,19 +101,23 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if form.validate_on_submit():
-
-       user  = users(Username=form.username.data, Password = form.password.data)
-       temp = users.query.filter_by(Username=form.username.data, Password=form.password.data).first()
-       if temp:
-          return render_template('books.html', name1 = f"Hello", name2= form.username.data)
-
-       else:
-            return render_template('login.html', title='Login', form=form)
-
+    if request.method == 'GET':
+      return render_template('login.html', title = 'Login', form=form)
     else:
-          flash('Login Unsuccessful. Please check email and password', 'danger')
-          return render_template('login.html', title='Login', form=form)
+      form = LoginForm()
+      if form.validate_on_submit():
+
+         user  = users(Username=form.username.data, Password = form.password.data)
+         temp = users.query.filter_by(Username=form.username.data).first()
+         if temp.Password == form.password.data:
+
+           return render_template('login.html')
+         else:
+           return redirect(url_for('login'))
+
+      else:
+         flash('Login Unsuccessful. Please check email and password', 'danger')
+         return redirect(url_for('login'))
 
 
 
