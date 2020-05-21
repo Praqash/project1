@@ -32,19 +32,12 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
-from project1.models import *
+from flaskblog import models
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 Session(app)
 db = SQLAlchemy(app)
-from project1.routes import *
-
-def table():
-    db.create_all()
-
-if __name__ == "__main__":
-    with app.app_context():
-        table()
+from flaskblog import routes
 
 if __name__ == '__main__':
     app.run(debug=True)

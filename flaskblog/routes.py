@@ -1,12 +1,9 @@
 from flask import render_template, url_for, flash, redirect, request
-from project1.__init__ import db, bcrypt, app
-from project1.forms import RegistrationForm, LoginForm
-from project1.models import *
+from flaskblog import db, bcrypt, app
+from flaskblog.forms import RegistrationForm, LoginForm
+from flaskblog.models import User
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_bcrypt import Bcrypt
-bcrypt = Bcrypt(app)
 
-app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 @app.route("/")
 @app.route("/home")
