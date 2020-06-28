@@ -1,4 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>{{ current_user.username }}</h1>
+
+    <h1>Hello,</h1><h1>{{current_user.username }}</h1>
+    <div class="form group">
+      <select class ="form-control" name= book_id">
+      {%for book in books%}
+      <option value="{{book.id}}" > {{book.title}} -> {{book.author}}</option>
+      {%endfor%}
+      </select>
+      </div>
 {% endblock content %}

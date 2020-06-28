@@ -21,7 +21,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask import render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm
-from models import User
+from models import User, Books
 from flask_login import login_user, current_user, logout_user, login_required
 
 
@@ -39,10 +39,12 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 from models import User
+from models import Books
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 Session(app)
 db = SQLAlchemy(app)
+
 
 login_manager = LoginManager(app)
 @login_manager.user_loader
@@ -62,7 +64,7 @@ def home():
 def about():
 
       return render_template('about.html', title='About')
-    
+
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -104,9 +106,8 @@ def logout():
 @app.route("/account")
 @login_required
 def account():
-    return render_template('account.html', title='Account')
-
-
+    books = Books.query.all()
+    return render_template('account.html', title='Account', books = books)
 
 if __name__ == '__main__':
     app.run(debug=True)
