@@ -23,6 +23,7 @@ from flask import render_template, url_for, flash, redirect, request
 from forms import RegistrationForm, LoginForm
 from models import User, Books
 from flask_login import login_user, current_user, logout_user, login_required
+import requests
 
 
 
@@ -59,11 +60,7 @@ def home():
   return render_template('home.html')
 
 
-@app.route("/about")
 
-def about():
-
-      return render_template('about.html', title='About')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -108,6 +105,29 @@ def logout():
 def account():
     books = Books.query.all()
     return render_template('account.html', title='Account', books = books)
+
+
+
+@app.route("/about" , methods = ['POST'])
+
+def about():
+      return render_template('about.html')
+
+
+@app.route("/reviews", methods = ['POST'] )
+
+def reviews():
+      r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": '0441172717'})
+      print(r.json())
+      data = print(r.json())
+      return render_template('reviews.html', r= r)
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
