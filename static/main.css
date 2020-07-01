@@ -5,3 +5,27 @@ body {
   background-size: cover;
   font-family: sans-serif;
 }
+
+
+
+h1, h2, h3, h4, h5, h6 {
+  color: Black;
+}
+
+.bg-steel {
+  background: url('IMG.jpg') no-repeat;
+  background-color: #3C5B2B;
+  opacity: #.8;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: Black;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
