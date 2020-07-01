@@ -117,7 +117,8 @@ def about():
 @app.route("/reviews", methods = ['POST'] )
 
 def reviews():
-      r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": '0441172717'})
+      isbn = request.form.get("book_isbn")
+      r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
       print(r.json())
       data = print(r.json())
       return render_template('reviews.html', r= r)
