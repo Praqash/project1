@@ -108,7 +108,7 @@ def account():
 
 
 
-@app.route("/about" , methods = ['POST'])
+@app.route("/about" )
 
 def about():
       return render_template('about.html')
