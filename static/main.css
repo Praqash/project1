@@ -13,9 +13,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  background: url('IMG.jpg') no-repeat;
+
   background-color: #3C5B2B;
-  opacity: #.8;
+  
 }
 
 .site-header .navbar-nav .nav-link {
