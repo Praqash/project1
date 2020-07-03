@@ -20,7 +20,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask import render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm, LoginForm, PostForm
 from models import User, Books
 from flask_login import login_user, current_user, logout_user, login_required
 import requests
@@ -54,7 +54,7 @@ def load_user(user_id):
 
 
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 @app.route("/home")
 def home():
   return render_template('home.html')
@@ -88,7 +88,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            flash('Login successful', 'sucess')
+            return redirect(next_page) if next_page else redirect(url_for('account'))
+
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
@@ -114,15 +116,25 @@ def about():
       return render_template('about.html')
 
 
-@app.route("/reviews", methods = ['POST'] )
+@app.route("/reviews", methods = ['GET', 'POST'] )
 
 def reviews():
       isbn = request.form.get("book_isbn")
       r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
-      print(r.json())
-      data = print(r.json())
-      return render_template('reviews.html', r= r)
 
+      data = (r.json())
+      return render_template('reviews.html', data= data)
+
+
+
+
+
+
+@app.route("/post_review", methods=['GET', 'POST'])
+@login_required
+def post_review():
+    form = PostForm()
+    return render_template('post_review.html', form= form)
 
 
 
