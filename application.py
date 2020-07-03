@@ -133,8 +133,16 @@ def reviews():
 @app.route("/post_review", methods=['GET', 'POST'])
 @login_required
 def post_review():
+    isbn = request.form.get("book_isbn")
+    r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
+    data = (r.json())
     form = PostForm()
-    return render_template('post_review.html', form= form)
+    return render_template('post_review.html', form= form, data= data)
+    post = Post(title=form.title.data, content=form.content.data, author=current_user)
+    db.session.add(post)
+    db.session.commit()
+    flash('Your post has been created!', 'success')
+    return redirect(url_for('home'))
 
 
 

@@ -1,5 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<div class="center">
+<h1>{{data}}</h1>
+</div>
+<style>
+          .center {
+              text-align-float: right;
+              padding-top: 100px;
+
+          }
+      </style>
+
 <div class="content-section">
     <form method="GET" action="">
         {{ form.hidden_tag() }}
