@@ -1,8 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
-
+<div class="center">
     <h1>Hello,</h1>
     <h1>{{current_user.username }}</h1>
+
+</div>
+  <style>
+            .center {
+                text-align: center;
+                padding-top: 100px;
+
+            }
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
 <form action="{{ url_for('reviews') }}" method = "POST">
 <div class = "form-group">
 

@@ -20,8 +20,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask import render_template, url_for, flash, redirect, request
-from forms import RegistrationForm, LoginForm, PostForm
-from models import User, Books
+from forms import RegistrationForm, LoginForm, CommentForm
+from models import User, Books, Reviews
 from flask_login import login_user, current_user, logout_user, login_required
 import requests
 
@@ -123,6 +123,7 @@ def reviews():
       r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
 
       data = (r.json())
+
       return render_template('reviews.html', data= data)
 
 
@@ -133,18 +134,20 @@ def reviews():
 @app.route("/post_review", methods=['GET', 'POST'])
 @login_required
 def post_review():
-    isbn = request.form.get("book_isbn")
-    r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
-    data = (r.json())
-    form = PostForm()
-    return render_template('post_review.html', form= form, data= data)
-    post = Post(title=form.title.data, content=form.content.data, author=current_user)
-    db.session.add(post)
-    db.session.commit()
-    flash('Your post has been created!', 'success')
-    return redirect(url_for('home'))
 
+      id = request.form.get("book_isbn")
+      book = Books.query.filter_by(isbn=id).first()
+      return render_template('post_review.html', book = book )
 
+      name1 = request.form.get("name1")
+      name2 = request.form.get("name2")
+
+      Form = CommentForm()
+      if form.validate_on_submit():
+        review = Reviews( comment= name1, latest_rating= name2, title = book.title, year=book.year, isbn= book.isbn, author=book.autho )
+        db.session.add(review)
+        db.session.commit()
+        return redirect(url_for('account'))
 
 
 

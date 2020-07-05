@@ -33,8 +33,10 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
+class CommentForm(FlaskForm):
+    comment = StringField('comment',
+                        validators=[DataRequired(),)
+    comment = StringField('rating',
+                                validators=[Length(min=1, max=5))
 
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
+    submit = SubmitField('Post Comment' )
