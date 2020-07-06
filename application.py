@@ -140,11 +140,14 @@ def post_review():
 
 
        else:
-          name1 = request.form.get("name1")
-          name2 = request.form.get("name2")
 
           id = request.form.get("book_isbn")
           book = Books.query.filter_by(isbn=id).first()
+          return render_template('post_review.html', book= book)
+
+          name1 = request.form.get("name1")
+          name2 = request.form.get("name2")
+
 
           review = Reviews( username = current_user.username, comment= name1, latest_rating= name2, title = book.title, year=book.year, isbn= book.isbn, author=book.author )
           db.session.add(review)
