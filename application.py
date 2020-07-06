@@ -96,13 +96,13 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
-@app.route("/logout")
+@app.route("/logout", methods=['GET', 'POST'])
 def logout():
     logout_user()
     return redirect(url_for('home'))
 
 
-@app.route("/account")
+@app.route("/account" , methods=['GET', 'POST'])
 @login_required
 def account():
     books = Books.query.all()
@@ -135,19 +135,30 @@ def reviews():
 @login_required
 def post_review():
 
-      id = request.form.get("book_isbn")
-      book = Books.query.filter_by(isbn=id).first()
-      return render_template('post_review.html', book = book )
+       if request.method == 'GET':
+           return render_template('post_review.html', data= data)
 
-      name1 = request.form.get("name1")
-      name2 = request.form.get("name2")
 
-      Form = CommentForm()
-      if form.validate_on_submit():
-        review = Reviews( comment= name1, latest_rating= name2, title = book.title, year=book.year, isbn= book.isbn, author=book.autho )
-        db.session.add(review)
-        db.session.commit()
-        return redirect(url_for('account'))
+       else:
+          name1 = request.form.get("name1")
+          name2 = request.form.get("name2")
+
+          id = request.form.get("book_isbn")
+          book = Books.query.filter_by(isbn=id).first()
+
+          review = Reviews( username = current_user.username, comment= name1, latest_rating= name2, title = book.title, year=book.year, isbn= book.isbn, author=book.author )
+          db.session.add(review)
+          db.session.commit()
+          return redirect(url_for('account'))
+
+          id = request.form.get("book_isbn")
+          book = Books.query.filter_by(isbn=id).first()
+          return redirect(url_for('account'))
+
+
+
+
+
 
 
 
