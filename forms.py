@@ -35,8 +35,8 @@ class LoginForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     comment = StringField('comment',
-                        validators=[DataRequired(),)
+                        validators=[DataRequired()])
     comment = StringField('rating',
-                                validators=[Length(min=1, max=5))
+                                validators=[Length(min=1, max=5)])
 
     submit = SubmitField('Post Comment' )
