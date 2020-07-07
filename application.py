@@ -143,16 +143,18 @@ def post_review():
           book = Books.query.filter_by(isbn=id).first()
           return render_template('post_review.html', book= book)
 
-          name1 = request.form.get("name1")
-          name2 = request.form.get("name2")
 
 
-          review = Reviews( username = current_user.username, comment= name1, latest_rating= name2, title = book.title, year=book.year, isbn= book.isbn, author=book.author )
-          db.session.add(review)
-          db.session.commit()
-          return render_template('account.html')
-
-
+@app.route("/comment", methods=['POST'])
+@login_required
+def comment():
+    name1 = request.form.get("comment")
+    
+    book = request.form.get("book")
+    review = Reviews( username = current_user.username, title = book.title, year=book.year, isbn= book.isbn, author=book.author, comment= name1, latest_rating= name2 )
+    db.session.add(review)
+    db.session.commit()
+    return redirect (url_for('account'))
 
 
 
