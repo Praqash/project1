@@ -131,15 +131,13 @@ def reviews():
 
 
 
-@app.route("/post_review", methods=['GET', 'POST'])
+@app.route("/post_review", methods=['POST'])
 @login_required
 def post_review():
 
-       if request.method == 'GET':
-           return render_template('post_review.html', data= data)
 
 
-       else:
+
 
           id = request.form.get("book_isbn")
           book = Books.query.filter_by(isbn=id).first()
@@ -149,14 +147,12 @@ def post_review():
           name2 = request.form.get("name2")
 
 
-          review = Reviews( username = current_user.username, comment= "name1", latest_rating= "name2", title = book.title, year=book.year, isbn= book.isbn, author=book.author )
+          review = Reviews( username = current_user.username, comment= name1, latest_rating= name2, title = book.title, year=book.year, isbn= book.isbn, author=book.author )
           db.session.add(review)
           db.session.commit()
-          return redirect(url_for('account'))
+          return render_template('account.html')
 
-          id = request.form.get("book_isbn")
-          book = Books.query.filter_by(isbn=id).first()
-          return redirect(url_for('account'))
+
 
 
 
