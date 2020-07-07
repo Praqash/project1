@@ -139,9 +139,9 @@ def post_review():
 
 
 
-          id = request.form.get("book_isbn")
-          book = Books.query.filter_by(isbn=id).first()
-          return render_template('post_review.html', book= book)
+          isbn = request.form.get("book_isbn")
+          book = Books.query.filter_by(isbn=isbn).first()
+          return render_template('post_review.html', isbn= isbn, book= book)
 
 
 
@@ -149,11 +149,13 @@ def post_review():
 @login_required
 def comment():
     name1 = request.form.get("comment")
-    
-    book = request.form.get("book")
-    review = Reviews( username = current_user.username, title = book.title, year=book.year, isbn= book.isbn, author=book.author, comment= name1, latest_rating= name2 )
+    isbn = request.form.get("isbn")
+    book = Books.query.filter_by(isbn=isbn).first()
+    review = Reviews( username = current_user.username, title = book.title, year=book.year, isbn= book.isbn, author=book.author, comment= name1 )
     db.session.add(review)
     db.session.commit()
+    print(book)
+
     return redirect (url_for('account'))
 
 

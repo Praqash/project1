@@ -3,11 +3,12 @@
 
 <div class="form-group">
   <h1>{{book}}</h1>
-<div class="book">
+  <h1>{{isbn}}</h1>
 <form action="{{ url_for('comment') }}" method="post">
-
+<input type= "hidden" id="isbn" name="isbn" value="{{ isbn }}">
   <input type ="textarea" class="form-control" name= "comment" rows="5" placeholder ="Type your comment here..." id="comment">
-    <button class="btn btn-primary">Post Comment</button>
+  <input type="submit" name="submit" value="Post Comment" class="btn btn-info">
+
 </div>
 </div>
 <style>
@@ -28,7 +29,7 @@
           .form-control{
               text-align: center;
               opacity: .5;
-              
+
 
 
           }
