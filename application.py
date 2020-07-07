@@ -154,14 +154,19 @@ def comment():
     review = Reviews( username = current_user.username, title = book.title, year=book.year, isbn= book.isbn, author=book.author, comment= name1 )
     db.session.add(review)
     db.session.commit()
-    print(book)
+    flash('Comment Posted', 'sucess')
 
     return redirect (url_for('account'))
 
 
 
+@app.route("/your_post", methods=['GET','POST'])
+@login_required
+def your_post():
 
 
+     reviews = Reviews.query.filter_by(username=current_user.username)
+     return render_template('your_post.html', title='Your_Post', reviews=reviews)
 
 
 
