@@ -1,21 +1,22 @@
 body {
   margin: 0;
   padding: 0;
-  background-image: url('IMG.jpg') no-repeat;
+  background-image: url("IMG.jpg") no-repeat;
   background-size: cover;
   font-family: sans-serif;
 }
 
-
-
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: Black;
 }
 
 .bg-steel {
-
-  background-color: #3C5B2B;
-
+  background-color: #3c5b2b;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -31,4 +32,5 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-toggler.toggler-example {
-cursor: pointer;
+  cursor: pointer;
+}
