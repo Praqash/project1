@@ -1,3 +1,5 @@
+from models import Books
+from models import User
 import os
 from flask import render_template
 from flask import Flask, session
@@ -26,7 +28,6 @@ from flask_login import login_user, current_user, logout_user, login_required
 import requests
 
 
-
 from flask import Flask
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -39,8 +40,6 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
-from models import User
-from models import Books
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 Session(app)
@@ -48,19 +47,17 @@ db = SQLAlchemy(app)
 
 
 login_manager = LoginManager(app)
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-
 @app.route("/", methods=['GET', 'POST'])
 @app.route("/home")
 def home():
-  return render_template('home.html')
-
-
-
+    return render_template('home.html')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -69,8 +66,10 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        hashed_password = bcrypt.generate_password_hash(
+            form.password.data).decode('utf-8')
+        user = User(username=form.username.data,
+                    email=form.email.data, password=hashed_password)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -102,47 +101,36 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route("/account" , methods=['GET', 'POST'])
+@app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
     books = Books.query.all()
-    return render_template('account.html', title='Account', books = books)
+    return render_template('account.html', title='Account', books=books)
 
 
-
-@app.route("/about" )
-
+@app.route("/about")
 def about():
-      return render_template('about.html')
+    return render_template('about.html')
 
 
-@app.route("/reviews", methods = ['GET', 'POST'] )
-
+@app.route("/reviews", methods=['GET', 'POST'])
 def reviews():
-      isbn = request.form.get("book_isbn")
-      r = requests.get("https://www.goodreads.com/book/review_counts.json",params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
+    isbn = request.form.get("book_isbn")
+    r = requests.get("https://www.goodreads.com/book/review_counts.json",
+                     params={"key": 'LHWJHAL1SZGQk1zztVIxsw', "isbns": isbn})
 
-      data = (r.json())
+    data = (r.json())
 
-      return render_template('reviews.html', data= data)
-
-
-
-
+    return render_template('reviews.html', data=data)
 
 
 @app.route("/post_review", methods=['POST'])
 @login_required
 def post_review():
 
-
-
-
-
-          isbn = request.form.get("book_isbn")
-          book = Books.query.filter_by(isbn=isbn).first()
-          return render_template('post_review.html', isbn= isbn, book= book)
-
+    isbn = request.form.get("book_isbn")
+    book = Books.query.filter_by(isbn=isbn).first()
+    return render_template('post_review.html', isbn=isbn, book=book)
 
 
 @app.route("/comment", methods=['POST'])
@@ -151,25 +139,21 @@ def comment():
     name1 = request.form.get("comment")
     isbn = request.form.get("isbn")
     book = Books.query.filter_by(isbn=isbn).first()
-    review = Reviews( username = current_user.username, title = book.title, year=book.year, isbn= book.isbn, author=book.author, comment= name1 )
+    review = Reviews(username=current_user.username, title=book.title,
+                     year=book.year, isbn=book.isbn, author=book.author, comment=name1)
     db.session.add(review)
     db.session.commit()
     flash('Comment Posted', 'sucess')
 
-    return redirect (url_for('account'))
+    return redirect(url_for('account'))
 
 
-
-@app.route("/your_post", methods=['GET','POST'])
+@app.route("/your_post", methods=['GET', 'POST'])
 @login_required
 def your_post():
 
-
-     reviews = Reviews.query.filter_by(username=current_user.username)
-     return render_template('your_post.html', title='Your_Post', reviews=reviews)
-
-
-
+    reviews = Reviews.query.filter_by(username=current_user.username)
+    return render_template('your_post.html', title='Your_Post', reviews=reviews)
 
 
 if __name__ == '__main__':
